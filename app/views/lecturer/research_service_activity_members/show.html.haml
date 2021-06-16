@@ -1,0 +1,30 @@
+%h3 PENGAJUAN SEBAGAI ANGGOTA PENELITI
+
+%p Nama Anda diajukan sebagai Anggota untuk kegiatan berikut:
+%table.table.table-bordered.table-hover
+  %tbody
+    %tr
+      %th= ResearchServiceActivity.human_attribute_name :type_id
+      %td= @research_service_activity_member.research_service_activity.type_caption
+    %tr
+      %th= ResearchServiceActivity.human_attribute_name :company_title
+      %td= @research_service_activity_member.research_service_activity.company_title
+    %tr
+      %th= ResearchServiceActivity.human_attribute_name :title
+      %td= @research_service_activity_member.research_service_activity.title
+    %tr
+      %th= ResearchServiceActivity.human_attribute_name :lecturer_id
+      %td= "#{@research_service_activity_member.research_service_activity.lecturer.code} - #{@research_service_activity_member.research_service_activity.lecturer.name}"
+    %tr
+      %th= ResearchServiceActivity.human_attribute_name :implementation_at
+      %td= datetime_to_string @research_service_activity_member.research_service_activity.implementation_at, :long
+    %tr
+      %th= ResearchServiceActivity.human_attribute_name :status_id
+      %td= @research_service_activity_member.research_service_activity.status_caption
+%p
+  = link_to agree_lecturer_research_service_activity_member_path( @research_service_activity_member ), class: 'btn btn-primary', method: :post, confirm: 'Apakah Anda yakin untuk setuju menjadi Anggota Peneliti?', title: 'Setuju menjadi Anggota Peneliti' do
+    %i.icon-ok
+    Setuju
+  = link_to reject_lecturer_research_service_activity_member_path( @research_service_activity_member ), class: 'btn btn-danger', method: :post, confirm: 'Apakah Anda yakin untuk menolak menjadi Anggota Peneliti?', title: 'Tolak menjadi Anggota Peneliti' do
+    %i.icon-remove
+    Tolak

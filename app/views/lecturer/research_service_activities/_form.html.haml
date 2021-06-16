@@ -1,0 +1,99 @@
+= form_for [:lecturer, @research_service_activity], html: { class: 'well' } do |f|
+  %fieldset
+    - case @research_service_activity.status_id
+    - when 0
+      %p
+        = f.label :program_id
+        = f.select :program_id, ResearchServiceActivity.program_types, {}, :class => 'input-xxlarge'
+      %p
+        = f.label :year_id
+        = f.select :year_id, ResearchServiceActivity.year_types, {}, :class => 'input-xxlarge'
+      %p
+        = f.label :stage_id
+        %label.radio
+          = f.radio_button :stage_id, 1
+          1/Ganjil
+        %label.radio
+          = f.radio_button :stage_id, 2
+          2/Genap
+      %p
+        = f.label :type_id
+        - ResearchServiceActivity::TYPE_TYPES.each do |key, value|
+          %label.radio
+            = f.radio_button :type_id, key
+            = value
+      %p
+        = f.label :company_contact_title_id
+        - ResearchServiceActivity::COMPANY_CONTACT_TITLE_TYPES.each do |key, value|
+          %label.radio
+            = f.radio_button :company_contact_title_id, key
+            = value
+      %p
+        = f.label :company_contact_name
+        = f.text_field :company_contact_name, class: 'input-xxlarge'
+      %p
+        = f.label :company_title
+        = f.text_field :company_title, class: 'input-xxlarge'
+      %p
+        = f.label :title
+        = f.text_field :title, class: 'input-xxlarge'
+      %p
+        = f.label :implementation_at
+        = f.text_field :implementation_at, class: 'input-xxlarge date'
+
+    - when 8
+      %p
+        = f.label :reply_document
+        = f.file_field :reply_document, required: :true
+
+    - when 12
+      %p
+        = f.label :article_title
+        = f.text_field :article_title, class: 'input-xxlarge'
+      %p
+        = f.label :publisher_category_id
+        = f.select :publisher_category_id, ResearchServiceActivity.publisher_category_types, {}, :class => 'input-xxlarge', required: true
+      %p
+        = f.label :publisher_title
+        = f.text_field :publisher_title, class: 'input-xxlarge'
+      %p
+        = f.label :publisher_license_number
+        = f.text_field :publisher_license_number, class: 'input-xxlarge'
+        %ul
+          %li Isikan nomor ISSN untuk jurnal;
+          %li Isikan nomor ISBN untuk prosiding.
+      %p
+        = f.label :publisher_year_id
+        = f.text_field :publisher_year_id, class: 'input-xxlarge'
+      %p
+        = f.label :publisher_volume_id
+        = f.text_field :publisher_volume_id, class: 'input-xxlarge'
+        %ul
+          %li Volume Jurnal hanya diisi untuk penerbit dengan kategori jurnal.
+      %p
+        = f.label :publisher_number_id
+        = f.text_field :publisher_number_id, class: 'input-xxlarge'
+        %ul
+          %li Nomor Jurnal hanya diisi untuk penerbit dengan kategori jurnal.
+      %p
+        = f.label :publisher_url
+        = f.text_field :publisher_url, class: 'input-xxlarge'
+      %p
+        = f.label :article_url
+        = f.text_field :article_url, class: 'input-xxlarge'
+      - if @research_service_activity.type_id == 1
+        %p
+          = f.label :news_url
+          = f.text_field :news_url, class: 'input-xxlarge'
+        %p
+          = f.label :video_url
+          = f.text_field :video_url, class: 'input-xxlarge'
+        %p
+          = f.label :copyright_document
+          = f.file_field :copyright_document
+      %p
+        = f.label :optional_document
+        = f.file_field :optional_document
+
+  %p
+    = f.submit 'Simpan', class: 'btn btn-primary'

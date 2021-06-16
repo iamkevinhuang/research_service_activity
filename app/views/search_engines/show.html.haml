@@ -1,0 +1,29 @@
+= content_for :title do
+  Pencarian Dokumen Digital
+
+= content_for :heading_box do
+  #pageheading
+    = image_tag 'public/general/posts_banner.jpg'
+    .clear
+    #page-title.col_14
+      %h3 PENCARIAN
+    #page-desc.col_34.last
+      %p= @id
+    .clear
+  .clear
+
+#maincontent
+  .center
+    .maincontent
+      .center
+        %h3 PENCARIAN DOKUMEN DIGITAL
+        - if @signature_container
+          %p
+            Dokumen digital
+            %b= @signature_container.title
+            ditemukan dengan nomor
+            %b= @signature_container.number
+            dan silakan klik link berikut untuk melihat dokumen tersebut.
+            %h4= link_to 'Lihat Dokumen Digital', @signature_container.link, target: '_blank'
+        - else
+          %h4 Maaf, dokumen digital tidak ditemukan

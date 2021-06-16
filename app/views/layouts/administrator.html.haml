@@ -1,0 +1,370 @@
+!!!
+%html
+  %head
+    %title
+      Sistem Informasi Akademik Universitas Prima Indonesia
+    %meta{"http-equiv"=>"Content-Type", :content=>"text/html; charset=utf-8"}/
+    %link{:rel=>'shortcut icon', :href=>'/assets/administrator/general/unpri-icon.ico'}
+    = csrf_meta_tag
+    = stylesheet_link_tag 'administrator/application', :media => 'screen, print'
+    = yield(:head)
+  %body
+    .navbar.navbar-fixed-top.navbar-inverse
+      .navbar-inner
+        .container-fluid
+          = link_to "SIA #{application_configuration_short_title.upcase}", administrator_pages_home_path, class: 'brand'
+          - if current_administrator
+            .nav-collapse
+              %ul.nav.pills
+                - if current_administrator.section? 'umum'
+                  %li#menu-umum.dropdown
+                    = link_to '#menu-umum', class: 'dropdown-toggle', 'data-toggle' => 'dropdown' do
+                      Umum
+                      %b.caret
+                    %ul.dropdown-menu
+                      - if current_administrator.section? 'dosen'
+                        %li= link_to 'Dosen', administrator_lecturers_path
+                      - if current_administrator.section? 'mahasiswa'
+                        %li= link_to 'Mahasiswa', administrator_students_path
+                      - if current_administrator.section? 'profil_mahasiswa'
+                        %li= link_to 'Profil Mahasiswa', administrator_student_profiles_path
+                      - if current_administrator.section? 'mahasiswa_keluar'
+                        %li= link_to 'Mahasiswa Keluar', administrator_student_exits_path
+                      - if current_administrator.section? 'bpjs_kesehatan_mahasiswa'
+                        %li= link_to 'BPJS Kesehatan Mahasiswa', administrator_healthcare_students_path
+                      - if current_administrator.section? 'data_wajib_mahasiswa'
+                        %li= link_to 'Data Wajib Mahasiswa', administrator_student_required_informations_path
+                      - if current_administrator.section? 'pegawai'
+                        %li= link_to 'Pegawai', administrator_employees_path
+                      - if current_administrator.section? 'institusi'
+                        %li= link_to 'Institusi', administrator_institutions_path
+                      - if current_administrator.section? 'organisasi'
+                        %li= link_to 'Organisasi', administrator_organizations_path
+                      - if current_administrator.section? 'data_kartu_tanda_mahasiswa'
+                        %li= link_to 'Data Kartu Tanda Mahasiswa', new_administrator_student_card_reports_path
+                      - if current_administrator.section? 'tes_potensi_akademik'
+                        %li= link_to 'Tes Potensi Akademik', administrator_potential_tests_path
+                      - if current_administrator.section? 'dosen_ganda'
+                        %li= link_to 'Dosen Ganda', new_administrator_double_lecturer_path
+                      - if current_administrator.section? 'institusi_ganda'
+                        %li= link_to 'Institusi Ganda', new_administrator_double_institution_path
+                      - if current_administrator.section? 'business_plans'
+                        %li= link_to 'Business Plans', administrator_business_plans_path
+                      - if current_administrator.section? 'business_users'
+                        %li= link_to 'Business Users', administrator_business_users_path
+                      - if current_administrator.section? 'business_stores'
+                        %li= link_to 'Business Stores', administrator_business_stores_path
+                      - if current_administrator.section? 'business_reports'
+                        %li= link_to 'Business Reports', administrator_business_reports_path
+                      - if current_administrator.section? 'feeder_institusi'
+                        %li= link_to 'Feeder Institusi', administrator_feeder_institutions_path
+                      - if current_administrator.section? 'feeder_program'
+                        %li= link_to 'Feeder Program', administrator_feeder_programs_path
+                      - if current_administrator.section? 'altissia_gelombang'
+                        %li= link_to 'Altissia Gelombang', administrator_altissia_phases_path
+                      - if current_administrator.section? 'altissia_pendaftaran'
+                        %li= link_to 'Altissia Pendaftaran', administrator_altissia_enrolments_path
+                      - if current_administrator.section? 'pendaftaran_maba'
+                        %li= link_to 'Pendaftaran Mahasiswa Baru', administrator_registers_path
+                      - if current_administrator.section? 'agensi'
+                        %li= link_to 'Agensi', administrator_agencies_path
+                      - if current_administrator.section? 'linktree'
+                        %li= link_to 'Linktree', administrator_linktrees_path
+                      - if current_administrator.section? 'promo_code'
+                        %li= link_to 'Kode Promo Pendaftaran', administrator_register_promos_path
+                - if current_administrator.section? 'keuangan'
+                  %li#menu-keuangan.dropdown
+                    = link_to '#menu-keuangan', class: 'dropdown-toggle', 'data-toggle' => 'dropdown' do
+                      Keuangan
+                      %b.caret
+                    %ul.dropdown-menu
+                      - if current_administrator.section? 'pembayaran_uang_kuliah'
+                        %li= link_to 'Pembayaran Uang Kuliah', administrator_payments_path
+                      -#
+                        %li= link_to 'Rangkuman Registrasi Mahasiswa', administrator_pages_students_registration_reports_path
+                      - if current_administrator.section? 'laporan_keuangan_presensi_dosen'
+                        %li= link_to 'Laporan Keuangan Presensi Dosen', attendance_administrator_finance_reports_path
+                      - if current_administrator.section? 'laporan_pembayaran_uang_kuliah'
+                        %li= link_to 'Laporan Pembayaran Uang Kuliah', recapitulation_administrator_finance_reports_path
+                      - if current_administrator.section? 'laporan_pembayaran_kompetensi'
+                        %li= link_to 'Laporan Pembayaran Kompetensi', administrator_competence_finance_reports_path
+                      - if current_administrator.section? 'tipe_pembayaran_uang_kuliah'
+                        %li= link_to 'Tipe Pembayaran Uang Kuliah', administrator_type_of_payments_path
+                      - if current_administrator.section? 'syarat_pembayaran_uang_kuliah'
+                        %li= link_to 'Syarat Pembayaran Uang Kuliah', administrator_term_of_payments_path
+                      - if current_administrator.section? 'verifikasi_pembayaran_maba'
+                        %li= link_to 'Verifikasi Pembayaran Mahasiswa Baru', administrator_verify_payments_path
+                      -#
+                        - if current_administrator.section? 'cek_kode_kartu_studi'
+                          %li= link_to 'Cek Kode Kartu Studi', code_check_administrator_study_cards_path
+                        - if current_administrator.section? 'laporan_khusus_pembayaran'
+                          %li= link_to 'Laporan Khusus Pembayaran', new_administrator_vice_finance_report_path
+                - if current_administrator.section? 'permohonan'
+                  %li#menu-permohonan.dropdown
+                    = link_to '#menu-permohonan', class: 'dropdown-toggle', 'data-toggle' => 'dropdown' do
+                      Permohonan
+                      %b.caret
+                    %ul.dropdown-menu
+                      - if current_administrator.section? 'surat_keterangan_aktif_kuliah'
+                        %li= link_to 'Surat Keterangan Aktif Kuliah', administrator_request_enrolment_statements_path
+                - if current_administrator.section? 'akademik'
+                  %li#menu-akademik.dropdown
+                    = link_to '#menu-akademik', class: 'dropdown-toggle', 'data-toggle' => 'dropdown' do
+                      Akademik
+                      %b.caret
+                    %ul.dropdown-menu
+                      - if current_administrator.section? 'dokumen'
+                        %li= link_to 'Dokumen', administrator_documents_path
+                      - if current_administrator.section? 'pencatatan_masalah'
+                        %li= link_to 'Pencatatan Masalah', administrator_problems_path
+                      - if current_administrator.section? 'berita_untuk_mahasiswa'
+                        %li= link_to 'Berita Untuk Mahasiswa', administrator_student_posts_path
+                      - if current_administrator.section? 'pelayanan_mahasiswa'
+                        %li= link_to 'Pelayanan Mahasiswa', administrator_services_path
+                      - if current_administrator.section? 'fakultas'
+                        %li= link_to 'Fakultas', administrator_faculty_path(:current)
+                      - if current_administrator.section? 'program_studi'
+                        %li= link_to 'Program Studi', administrator_program_path(:current)
+                      - if current_administrator.section? 'dosen_tetap'
+                        %li= link_to 'Dosen Tetap', administrator_permanent_lecturers_path
+                      - if current_administrator.section? 'ruangan_kelas'
+                        %li= link_to 'Ruangan Kelas', administrator_class_rooms_path
+                      - if current_administrator.section? 'mata_kuliah'
+                        %li= link_to 'Mata Kuliah', administrator_subjects_path
+                      - if current_administrator.section? 'kurikulum'
+                        %li= link_to 'Kurikulum', administrator_curriculum_items_path
+                      - if current_administrator.section? 'kelas_perkuliahan'
+                        %li= link_to 'Kelas Perkuliahan', administrator_lecture_schedules_path
+                      - if current_administrator.section? 'feeder_kelas_perkuliahan'
+                        %li= link_to 'Feeder Kelas Perkuliahan', administrator_feeder_schedules_path
+                      - if current_administrator.section? 'kartu_mahasiswa_sementara'
+                        %li= link_to 'Kartu Mahasiswa Sementara', new_administrator_student_card_generators_path
+                      - if current_administrator.section? 'surat_mengajar_dosen'
+                        %li= link_to 'Surat Mengajar Dosen', administrator_lecturer_decrees_path
+                      - if current_administrator.section? 'kartu_rencana_studi'
+                        %li= link_to 'Kartu Rencana Studi', administrator_study_cards_path
+                      - if current_administrator.section? 'presensi_perkuliahan'
+                        %li= link_to 'Presensi Perkuliahan', administrator_attendances_path
+                      - if current_administrator.section? 'ujian_tengah_semester'
+                        %li= link_to 'Ujian Tengah Semester', administrator_middle_terms_path
+                      - if current_administrator.section? 'ujian_akhir_semester'
+                        %li= link_to 'Ujian Akhir Semester', administrator_final_terms_path
+                      - if current_administrator.section? 'ujian_remedial'
+                        %li= link_to 'Ujian Remedial', administrator_remedial_tests_path
+                      - if current_administrator.section? 'ujian_intensif'
+                        %li= link_to 'Ujian Intensif', administrator_intensive_tests_path
+                      -#
+                        - if current_administrator.section? 'ujian_remedial_lama'
+                          %li= link_to 'Ujian Remedial Lama', administrator_remedial_terms_path
+                      - if current_administrator.section? 'ujian_blok'
+                        %li= link_to 'Ujian Blok', administrator_block_terms_path
+                      - if current_administrator.section? 'penutupan_jadwal_perkuliahan'
+                        %li= link_to 'Penutupan Jadwal Perkuliahan', administrator_closing_lecture_schedule_items_path
+                      - if current_administrator.section? 'penutupan_kartu_studi'
+                        %li= link_to 'Penutupan Kartu Studi', administrator_closing_study_cards_path
+                      - if current_administrator.section? 'kartu_hasil_evaluasi_dosen'
+                        %li= link_to 'Kartu Hasil Evaluasi Dosen', administrator_evaluation_cards_path
+                      - if current_administrator.section? 'kelompok_coass'
+                        %li= link_to 'Kelompok Coass', administrator_coass_groups_path
+                      - if current_administrator.section? 'kegiatan_mahasiswa'
+                        %li= link_to 'Kegiatan Mahasiswa', administrator_student_activities_path
+                      - if current_administrator.section? 'monev_mata_kuliah'
+                        %li= link_to 'Monev Mata Kuliah', administrator_subject_evaluations_path
+                      - if current_administrator.section? 'permohonan_buka_kembali_monev'
+                        %li= link_to 'Permohonan Pembukaan Kembali Kuesioner Monev', list_re_open_administrator_subject_evaluations_path
+                      - if current_administrator.section? 'laporan_semester'
+                        %li= link_to 'Laporan Semester', administrator_program_reports_path
+                      - if current_administrator.section? 'status_ujian'
+                        %li= link_to 'Aktifkan Status Ujian', administrator_exam_statuses_path
+                      -#
+                        %li= link_to 'Surat Masuk', administrator_in_letters_path
+                        %li= link_to 'Surat Keluar', administrator_out_letters_path
+
+                - if current_administrator.section? 'bimbingan'
+                  %li#menu-bimbingan.dropdown
+                    = link_to '#menu-bimbingan', class: 'dropdown-toggle', 'data-toggle' => 'dropdown' do
+                      Bimbingan
+                      %b.caret
+                    %ul.dropdown-menu
+                      - if current_administrator.section? 'aktivasi_bimbingan'
+                        %li= link_to 'Aktivasi', administrator_activate_theses_path
+                      - if current_administrator.section? 'persetujuan_judul_bimbingan'
+                        %li= link_to 'Persetujuan Judul', administrator_approved_thesis_titles_path
+                      - if current_administrator.section? 'persetujuan_bahan_bimbingan'
+                        %li= link_to 'Persetujuan Bahan', administrator_approved_thesis_supports_path
+                      - if current_administrator.section? 'laporan_bimbingan'
+                        %li= link_to 'Laporan Bimbingan', administrator_theses_reports_path
+                - if current_administrator.section? 'penelitian'
+                  %li#menu-bimbingan.dropdown
+                    = link_to '#menu-penelitian', class: 'dropdown-toggle', 'data-toggle' => 'dropdown' do
+                      Penelitian
+                      %b.caret
+                    %ul.dropdown-menu
+                      - if current_administrator.section? 'proposal_penelitian'
+                        %li= link_to 'Proposal Penelitian', administrator_research_proposals_path
+                      - if current_administrator.section? 'laporan_penelitian'
+                        %li= link_to 'Laporan Penelitian', administrator_research_reports_path
+                      - if current_administrator.section? 'publikasi_penelitian'
+                        %li= link_to 'Publikasi Penelitian', administrator_research_publications_path
+                      - if current_administrator.section? 'diseminasi_penelitian'
+                        %li= link_to 'Diseminasi Penelitian', administrator_research_disseminations_path
+                      - if current_administrator.section? 'jadwal_diseminasi'
+                        %li= link_to 'Jadwal Diseminasi', administrator_research_dissemination_schedules_path
+                      - if current_administrator.section? 'rekapitulasi_penelitian'
+                        %li= link_to 'Rekapitulasi Penelitian', administrator_research_recapitulations_path
+                      - if current_administrator.section? 'kegiatan_penelitian_pengabdian'
+                        %li= link_to 'Kegiatan Penelitian/Pengabdian', administrator_research_service_activities_path
+                - if current_administrator.section? 'alumni'
+                  %li#menu-alumni.dropdown
+                    = link_to '#menu-alumni', class: 'dropdown-toggle', 'data-toggle' => 'dropdown' do
+                      Alumni
+                      %b.caret
+                    %ul.dropdown-menu
+                      - if current_administrator.section? 'periode_alumni'
+                        %li= link_to 'Periode Alumni', administrator_alumni_stages_path
+                      - if current_administrator.section? 'daftar_alumni'
+                        %li= link_to 'Daftar Alumni', administrator_alumnis_path
+                      - if current_administrator.section? 'laporan_alumni_program_studi'
+                        %li= link_to 'Laporan Alumni Program Studi', program_report_administrator_alumnis_path
+                      - if current_administrator.section? 'laporan_alumni_universitas'
+                        %li= link_to 'Laporan Alumni Universitas', university_report_administrator_alumnis_path
+                      - if current_administrator.section? 'transkrip_akademik'
+                        %li= link_to 'Transkrip Akademik', administrator_academic_transcripts_path
+                      - if current_administrator.section? 'ijazah'
+                        %li= link_to 'Ijazah', administrator_certificates_path
+                - if current_administrator.section? 'survei'
+                  %li#menu-survei.dropdown
+                    = link_to '#menu-survey', class: 'dropdown-toggle', 'data-toggle' => 'dropdown' do
+                      Survei
+                      %b.caret
+                    %ul.dropdown-menu
+                      - if current_administrator.section? 'daftar_survei'
+                        %li= link_to 'Daftar Survei', administrator_surveys_path
+                      - if current_administrator.section? 'rekomendasi_survei'
+                        %li= link_to 'Rekomendasi Survei', administrator_survey_recommendations_path
+                      - if current_administrator.section? 'tindak_lanjut_survei'
+                        %li= link_to 'Tindak Lanjut Survei', administrator_survey_follow_ups_path
+
+                - if current_administrator.section? 'laporan'
+                  %li#menu-laporan.dropdown
+                    = link_to '#menu-laporan', class: 'dropdown-toggle', 'data-toggle' => 'dropdown' do
+                      Laporan
+                      %b.caret
+                    %ul.dropdown-menu
+                      - if current_administrator.section? 'seluruh_fakultas'
+                        %li= link_to 'Seluruh Fakultas', administrator_faculties_path
+                      - if current_administrator.section? 'seluruh_program_studi'
+                        %li= link_to 'Seluruh Program Studi', administrator_programs_path
+                      - if current_administrator.section? 'laporan_akademik'
+                        %li= link_to 'Laporan Akademik', administrator_pages_academic_reports_path
+                      - if current_administrator.section? 'laporan_presensi_perkuliahan'
+                        %li= link_to 'Laporan Presensi', program_administrator_attendance_reports_path
+                      - if current_administrator.section? 'laporan_pelayanan_mahasiswa'
+                        %li= link_to 'Laporan Pelayanan Mahasiswa', administrator_service_reports_path
+                      -# - if current_administrator.section? 'laporan_pembayaran_mahasiswa_baru'
+                      -#   %li= link_to 'Laporan Pembayaran Mahasaiswa Baru', administrator_new_student_payments_path
+                      -# - if current_administrator.section? 'laporan_jumlah_mahasiswa_per_program_studi_harian'
+                      -#   %li= link_to 'Laporan Jumlah Mahasiswa Per Program Studi Harian', daily_students_programs_count_administrator_marketing_reports_path
+                      -# - if current_administrator.section? 'laporan_jumlah_mahasiswa_per_program_studi_lengkap'
+                      -#   %li= link_to 'Laporan Jumlah Mahasiswa Per Program Studi Lengkap', advance_students_programs_count_administrator_marketing_reports_path
+                      - if current_administrator.section? 'laporan_marketing_mahasiswa'
+                        %li= link_to 'Laporan Marketing Mahasiswa', new_students_reports_administrator_marketing_reports_path
+                      - if current_administrator.section? 'laporan_pencatatan_masalah'
+                        %li= link_to 'Laporan Pencatatan Masalah', administrator_problems_reports_path
+                      - if current_administrator.section? 'laporan_marketing'
+                        %li= link_to 'Laporan Marketing', administrator_marketing_reports_path
+                      - if current_administrator.section? 'laporan_bpjs_kesehatan'
+                        %li= link_to 'Laporan BPJS Kesehatan', administrator_healthcare_reports_path
+                      - if current_administrator.section? 'laporan_ruangan_kelas'
+                        %li= link_to 'Laporan Ruangan Kelas', administrator_class_room_reports_path
+                      - if current_administrator.section? 'laporan_penelusuran_alumni'
+                        %li= link_to 'Laporan Penelusuran Alumni', administrator_tracer_studies_reports_path
+
+                - if current_administrator.section? 'perpustakaan'
+                  %li#menu-administrator.dropdown
+                    = link_to '#menu-perpustakaan', class: 'dropdown-toggle', 'data-toggle' => 'dropdown' do
+                      Perpustakaan
+                      %b.caret
+                    %ul.dropdown-menu
+                      - if current_administrator.section? 'cari_buku'
+                        %li= link_to 'Cari Buku', administrator_libraries_path
+                      - if current_administrator.section? 'tambah_buku'
+                        %li= link_to 'Tambah Buku', new_administrator_library_path
+                      - if current_administrator.section? 'pinjam_buku'
+                        %li= link_to 'Daftar Reservasi', administrator_lends_path
+
+                - if current_administrator.section? 'setting'
+                  %li#menu-administrator.dropdown
+                    = link_to '#menu-setting', class: 'dropdown-toggle', 'data-toggle' => 'dropdown' do
+                      Setting
+                      %b.caret
+                    %ul.dropdown-menu
+                      - if current_administrator.section? 'konfigurasi'
+                        %li= link_to 'Konfigurasi', administrator_application_configurations_path
+                      - if current_administrator.section? 'administrator'
+                        %li= link_to 'Administrator', administrator_administrators_path
+                      - if current_administrator.section? 'history_administrator'
+                        %li= link_to 'History Administrator', administrator_administrator_histories_path
+                      - if current_administrator.section? 'history_administrator'
+                        %li= link_to 'History Data', administrator_version_histories_path
+                      - if current_administrator.section? 'berita'
+                        %li= link_to 'Berita', administrator_posts_path
+                      - if current_administrator.section? 'halaman'
+                        %li= link_to 'Halaman', administrator_pages_path
+                      -#
+                        - if current_administrator.section? 'mahasiswa_belum_cetak_uts'
+                          %li= link_to 'Mahasiswa belum Cetak UTS', reports_students_without_middle_term_code_administrator_administrators_path
+                        - if current_administrator.section? 'mahasiswa_belum_cetak_uas'
+                          %li= link_to 'Mahasiswa belum Cetak UAS', reports_students_without_final_term_code_administrator_administrators_path
+                        - if current_administrator.section? 'rangkuman_kelas_perkuliahan'
+                          %li= link_to 'Rangkuman Kelas Perkuliahan', administrator_pages_summary_of_lecture_schedules_path
+                      - if current_administrator.section? 'rangkuman_registrasi_mahasiswa'
+                        %li= link_to 'Rangkuman Registrasi Mahasiswa', administrator_pages_students_registration_reports_path
+                      - if current_administrator.section? 'laporan_distribusi_model'
+                        %li= link_to 'Laporan Distribusi Model', administrator_pages_id_reports_path
+                      - if current_administrator.section? 'laporan_presensi_perkuliahan_keseluruhan'
+                        %li= link_to 'Laporan Presensi Perkuliahan Keseluruhan', administrator_pages_attendances_report_path
+                      - if current_administrator.section? 'laporan_pelayanan_mahasiswa_keseluruhan'
+                        %li= link_to 'Laporan Pelayanan Mahasiswa Keseluruhan', administrator_super_user_service_reports_path
+                      - if current_administrator.section? 'laporan_program_studi'
+                        %li= link_to 'Laporan Program Studi', new_administrator_super_user_program_report_path
+                      - if current_administrator.section? 'berita_umum'
+                        %li= link_to 'Berita Umum', administrator_general_posts_path
+                      - if current_administrator.section? 'berita_dosen'
+                        %li= link_to 'Berita Dosen', administrator_lecturer_posts_path
+                      - if current_administrator.section? 'kata_bijak'
+                        %li= link_to 'Kata Bijak', administrator_wise_quotes_path
+                      - if current_administrator.section? 'soal_tes_potensi_akademik'
+                        %li= link_to 'Soal Tes Potensi Akademik', administrator_potential_questions_path
+                      - if current_administrator.section? 'soal_kuesioner_evaluasi_kinerja_akademik_dosen'
+                        %li= link_to 'Soal Kuesioner Evaluasi Kinerja Akademik Dosen', administrator_questionnaires_path
+                      - if current_administrator.section? 'soal_monev_mata_kuliah'
+                        %li= link_to 'Soal Monev Mata Kuliah', administrator_subject_evaluation_question_items_path
+                      - if current_administrator.section? 'feeder_savon_services'
+                        %li= link_to 'Feeder Savon Services', administrator_savon_services_path
+
+            %p.navbar-text.pull-right
+              - if current_administrator
+                = link_to edit_administrator_configurations_path do
+                  = "#{current_administrator.configuration_title} - #{current_administrator.name}"
+                |
+                = link_to 'logout', administrator_logout_path
+    .container-fluid
+      .row-fluid
+        %div{ :id => generate_page_id }
+          - unless flash.empty?
+            - flash.keys.each do |key|
+              - case key
+                - when :alert
+                  .alert.alert-error= flash[key]
+                - when :notice
+                  .alert.alert-success= flash[key]
+                - else
+                  .alert.alert-info= flash[key]
+          -#
+            - ActiveSupport::Notifications.subscribe 'process_action.action_controller' do |*args|
+              - $my_event = ActiveSupport::Notifications::Event.new(*args)
+            .alert.alert-error= "Completed in #{$my_event.duration}ms (Views: #{$my_event.payload[:view_runtime]}ms | ActiveRecord: #{$my_event.payload[:db_runtime]}ms)"
+          = yield
+    = javascript_include_tag 'administrator/application'
+    = yield(:body)

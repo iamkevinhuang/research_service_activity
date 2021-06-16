@@ -1,0 +1,114 @@
+!!!
+%html
+  %head
+    %title
+      Sistem Informasi Akademik Dosen
+      = application_configuration_full_title
+    %meta{"http-equiv"=>"Content-Type", :content=>"text/html; charset=utf-8"}/
+    %link{ rel: 'shortcut icon', href: '/assets/administrator/general/unpri-icon.ico'}
+    = csrf_meta_tag
+    = stylesheet_link_tag 'administrator/application', media: 'screen, print'
+    = yield(:head)
+  %body
+    .navbar.navbar-fixed-top
+      .navbar-inner
+        .container-fluid
+          = link_to "SIAD #{application_configuration_short_title.upcase}", lecturer_pages_home_path, class: 'brand'
+          - if current_lecturer
+            %p.navbar-text.pull-right
+              = link_to current_lecturer.code_and_name, lecturer_pages_profile_path
+              |
+              = link_to current_lecturer.current_year_stage_program_title, edit_lecturer_configuration_change_path
+              |
+              = link_to 'logout', lecturer_logout_path
+    .container-fluid
+      .row-fluid
+        .span3
+          - if current_lecturer
+            .well
+              %ul.nav.nav-list
+                %li.nav-header= image_tag current_lecturer.image.url(:medium), class: 'img-polaroid'
+                %li.nav-header
+                  = current_lecturer.lecture_number
+                  %br/
+                  = current_lecturer.code
+                  %br/
+                  = current_lecturer.name
+              %hr/
+
+              %ul.nav.nav-list
+                %li.nav-header UMUM
+                %li= link_to 'Pengumuman', lecturer_posts_path
+                %li= link_to 'Dokumen Akademik', lecturer_documents_path
+                %li= link_to 'Profil', lecturer_pages_profile_path
+                %li= link_to 'Jadwal Perkuliahan', lecturer_lecture_schedule_items_path
+                %li= link_to 'Kartu Hasil Evaluasi Dosen', lecturer_evaluation_cards_path
+                %li.nav-header PENELITIAN
+                %li= link_to "Proposal Penelitian", lecturer_research_proposals_path
+                %li= link_to "Laporan Penelitian", lecturer_research_reports_path
+                %li= link_to "Publikasi Penelitian", lecturer_research_publications_path
+                %li= link_to "Diseminasi Penelitian", lecturer_research_disseminations_path
+                %li.nav-header ULASAN PENELITIAN
+                %li= link_to "Proposal Penelitian", lecturer_research_proposal_reviews_path
+                %li= link_to "Laporan Penelitian", lecturer_research_report_reviews_path
+                %li.nav-header KEGIATAN PENELITIAN/PENGABDIAN
+                %li= link_to "Pencatatan Kegiatan", lecturer_research_service_activities_path
+                %li= link_to "Persetujuan Anggota", lecturer_research_service_activity_members_path
+                %li.nav-header PERPUSTAKAAN
+                %li= link_to "Reservasi Buku", lecturer_libraries_path
+                %li= link_to "Keranjang", lecturer_carts_path
+                %li= link_to "Daftar Reservasi", lecturer_lends_path
+                %li.nav-header KONFIGURASI
+                %li= link_to "Ubah Data Aktif", edit_lecturer_configuration_change_path
+                %li= link_to "Ubah Kata Kunci", edit_lecturer_password_change_path
+                %li= link_to "Spada", lecturer_learnings_path
+          - else
+            .well
+              %ul.nav.nav-list
+                %li.nav-header 10 BERITA TERBARU
+                - @posts.each do |post|
+                  %li
+                    = link_to "../posts/#{post.to_param}", :target => '_blank', :class => 'btn-mini' do
+                      = post.title
+                      %br/
+                      = post.subtitle
+
+
+        .span9
+          %div{ :id => generate_page_id }
+            - unless flash.empty?
+              - flash.keys.each do |key|
+                - case key
+                  - when :alert
+                    .alert.alert-error= flash[key]
+                  - when :notice
+                    .alert.alert-success= flash[key]
+                  - else
+                    .alert.alert-info= flash[key]
+
+            = yield
+            - unless flash.empty?
+              - flash.keys.each do |key|
+                - case key
+                  - when :alert
+                    .alert.alert-error= flash[key]
+                  - when :notice
+                    .alert.alert-success= flash[key]
+                  - else
+                    .alert.alert-info= flash[key]
+    = javascript_include_tag 'administrator/application'
+    = yield(:body)
+    - if URI::parse(request.url).host == 'unprimdn.ac.id'
+      :javascript
+        var clicky_site_ids = clicky_site_ids || [];
+        clicky_site_ids.push(66509199);
+        (function() {
+        var s = document.createElement('script');
+        s.type = 'text/javascript';
+        s.async = true;
+        s.src = '//static.getclicky.com/js';
+        ( document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0] ).appendChild( s );
+        })();
+      %noscript
+        %p
+          %img{ :alt => 'Clicky', :width => '1', :height => '1', :src => '//in.getclicky.com/66509199ns.gif' }

@@ -1,0 +1,2 @@
+module LecturerSessionsHelper
+end

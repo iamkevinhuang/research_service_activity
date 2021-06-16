@@ -1,0 +1,19 @@
+%h3 PERSETUJUAN MENJADI ANGGOTA KEGIATAN PENELITIAN/PENGABDIAN
+%table.table.table-bordered.table-hover
+  %thead
+    %tr
+      %th.compact No
+      %th= ResearchServiceActivity.human_attribute_name :title
+      %th= ResearchServiceActivity.human_attribute_name :lecturer_id
+      %th= ResearchServiceActivity.human_attribute_name :status_id
+      %th Aksi
+  %tbody
+    - @research_service_activity_members.each_with_index do |member, index|
+      %tr
+        %td.center= index + 1
+        %td.center= member.research_service_activity.title
+        %td.center= member.research_service_activity.lecturer_name_code
+        %td.center= member.status_caption
+        %td.center
+          = link_to lecturer_research_service_activity_member_path(member), class: 'btn' do
+            %i.icon-folder-open

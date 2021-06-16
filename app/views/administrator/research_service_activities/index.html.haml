@@ -1,0 +1,280 @@
+%h3 KEGIATAN PENELITIAN/PENGABDIAN
+
+%table.table.table-bordered.table-hover
+  %thead
+    %tr
+      %th.span1 No.
+      %th= ResearchServiceActivity.human_attribute_name :id
+      %th= ResearchServiceActivity.human_attribute_name :program_id
+      %th= ResearchServiceActivity.human_attribute_name :year_stage_caption
+      %th= ResearchServiceActivity.human_attribute_name :status_id
+      %th= ResearchServiceActivity.human_attribute_name :type_id
+      %th= ResearchServiceActivity.human_attribute_name :title
+      %th= ResearchServiceActivity.human_attribute_name :lecturer_id
+      %th= ResearchServiceActivity.human_attribute_name :updated_at
+      %th Aksi
+  %tbody
+    - @research_service_activities.each_with_index do |research_service_activity, index| 
+      %tr
+        %td.center= index+1
+        %td.center= hash_id research_service_activity
+        %td.center= research_service_activity.program_title
+        %td.center= research_service_activity.year_stage_caption
+        %td.center= research_service_activity.status_caption
+        %td.center= research_service_activity.type_caption
+        %td.center= research_service_activity.title
+        %td.center= research_service_activity.lecturer.code_and_name
+        %td.center= datetime_to_string research_service_activity.updated_at, :long
+        %td.center
+          = link_to administrator_research_service_activity_path(research_service_activity), class: 'btn' do
+            %i.icon-folder-open
+
+-#
+  - if administrator_role_check?(['ketua_program_studi','sekretaris_program_studi'])
+    %h4 STATUS : Diajukan Ke Prodi (Pengantar)
+    %table.table.table-bordered.table-hover
+      %thead
+        %tr
+          %th.span1 No.
+          %th ID Permohonan
+          %th Jenis
+          %th Judul Penelitian / Pengabdian
+          %th Ketua Peneliti
+          %th Aksi
+      %tbody
+        - @research_service_activitys.each_with_index do |activity, index| 
+          %tr
+            %td.center= index+1
+            %td.center= "##{activity.id}"
+            %td.center= activity.type_caption
+            %td.center= activity.title
+            %td.center= activity.lecturer.code_and_name
+            %td.center
+              = link_to administrator_research_service_activity_path(activity), class: 'btn btn-warning' do
+                %i.icon-eye-open
+                Lihat
+
+    %h4 STATUS : Diajukan Ke Prodi (Penyelesaian)
+    %table.table.table-bordered.table-hover
+      %thead
+        %tr
+          %th.span1 No.
+          %th ID Permohonan
+          %th Jenis
+          %th Judul Penelitian / Pengabdian
+          %th Ketua Peneliti
+          %th Aksi
+      %tbody
+        - @research_service_activitys_4.each_with_index do |activity, index| 
+          %tr
+            %td.center= index+1
+            %td.center= "##{activity.id}"
+            %td.center= activity.type_caption
+            %td.center= activity.title
+            %td.center= activity.lecturer.code_and_name
+            %td.center
+              = link_to administrator_research_service_activity_path(activity), class: 'btn btn-warning' do
+                %i.icon-eye-open
+                Lihat
+
+    - if @program_activitys_recapitulation.size > 0
+      %h4
+        Program Studi Lainnya Dengan Status Diajukan ke Prodi (Pengantar)
+      %table.table.table-bordered.table-hover
+        %thead
+          %tr
+            %th.span1 No.
+            %th Program Studi
+            %th Jumlah Permohonan
+            %th.span1 Aksi
+        %tbody
+          - @program_activitys_recapitulation.each_with_index do |program, index|
+            %tr
+              - info_program = Program.find program[0]
+              %td.center= index + 1
+              %td= info_program.title
+              %td.center= program[1]
+              %td.center
+                = link_to change_program_administrator_research_service_activitys_path( program_id: program[0] ), class: 'btn', method: :post do
+                  %i.icon-refresh
+
+    - if @program_activitys_recapitulation_2.size > 0
+      %h4
+        Program Studi Lainnya Dengan Status Diajukan ke Prodi (Penyelesaian)
+      %table.table.table-bordered.table-hover
+        %thead
+          %tr
+            %th.span1 No.
+            %th Program Studi
+            %th Jumlah Permohonan
+            %th.span1 Aksi
+        %tbody
+          - @program_activitys_recapitulation_2.each_with_index do |program, index|
+            %tr
+              - info_program = Program.find program[0]
+              %td.center= index + 1
+              %td= info_program.title
+              %td.center= program[1]
+              %td.center
+                = link_to change_program_administrator_research_service_activitys_path( program_id: program[0] ), class: 'btn', method: :post do
+                  %i.icon-refresh
+
+
+  - if administrator_role_check?(['dekan','wakil_dekan'])
+    %h4 STATUS : Diajukan Ke Fakultas (Pengantar)
+    %table.table.table-bordered.table-hover
+      %thead
+        %tr
+          %th.span1 No.
+          %th ID Permohonan
+          %th Jenis
+          %th Judul Penelitian / Pengabdian
+          %th Ketua Peneliti
+          %th Aksi
+      %tbody
+        - @research_service_activitys_1.each_with_index do |activity, index| 
+          %tr
+            %td.center= index+1
+            %td.center= "##{activity.id}"
+            %td.center= activity.type_caption
+            %td.center= activity.title
+            %td.center= activity.lecturer.code_and_name
+            %td.center
+              = link_to administrator_research_service_activity_path(activity), class: 'btn btn-warning' do
+                %i.icon-eye-open
+                Lihat
+    %h4 STATUS : Diajukan Ke Fakultas (Penyelesaian)
+    %table.table.table-bordered.table-hover
+      %thead
+        %tr
+          %th.span1 No.
+          %th ID Permohonan
+          %th Jenis
+          %th Judul Penelitian / Pengabdian
+          %th Ketua Peneliti
+          %th Aksi
+      %tbody
+        - @research_service_activitys_5.each_with_index do |activity, index| 
+          %tr
+            %td.center= index+1
+            %td.center= "##{activity.id}"
+            %td.center= activity.type_caption
+            %td.center= activity.title
+            %td.center= activity.lecturer.code_and_name
+            %td.center
+              = link_to administrator_research_service_activity_path(activity), class: 'btn btn-warning' do
+                %i.icon-eye-open
+                Lihat
+
+    - if @program_activitys_recapitulation_3.size > 0
+      %h4
+        Program Studi Lainnya Dengan Status Diajukan ke Fakultas (Pengantar)
+      %table.table.table-bordered.table-hover
+        %thead
+          %tr
+            %th.span1 No.
+            %th Program Studi
+            %th Jumlah Permohonan
+            %th.span1 Aksi
+        %tbody
+          - @program_activitys_recapitulation_3.each_with_index do |program, index|
+            %tr
+              - info_program = Program.find program[0]
+              %td.center= index + 1
+              %td= info_program.title
+              %td.center= program[1]
+              %td.center
+                = link_to change_program_administrator_research_service_activitys_path( program_id: program[0] ), class: 'btn', method: :post do
+                  %i.icon-refresh
+
+    - if @program_activitys_recapitulation_4.size > 0
+      %h4
+        Program Studi Lainnya Dengan Status Diajukan ke Fakultas (Penyelesaian)
+      %table.table.table-bordered.table-hover
+        %thead
+          %tr
+            %th.span1 No.
+            %th Program Studi
+            %th Jumlah Permohonan
+            %th.span1 Aksi
+        %tbody
+          - @program_activitys_recapitulation_4.each_with_index do |program, index|
+            %tr
+              - info_program = Program.find program[0]
+              %td.center= index + 1
+              %td= info_program.title
+              %td.center= program[1]
+              %td.center
+                = link_to change_program_administrator_research_service_activitys_path( program_id: program[0] ), class: 'btn', method: :post do
+                  %i.icon-refresh
+
+
+  - if administrator_role_check?(['lembaga_penelitian_dan_pengabdian_masyarakat'])
+    %h4 STATUS : Diajukan Ke LPPM (Pengantar)
+    %table.table.table-bordered.table-hover
+      %thead
+        %tr
+          %th.span1 No.
+          %th ID Permohonan
+          %th Jenis
+          %th Judul Penelitian / Pengabdian
+          %th Ketua Peneliti
+          %th Aksi
+      %tbody
+        - @research_service_activitys_2.each_with_index do |activity, index| 
+          %tr
+            %td.center= index+1
+            %td.center= "##{activity.id}"
+            %td.center= activity.type_caption
+            %td.center= activity.title
+            %td.center= activity.lecturer.code_and_name
+            %td.center
+              = link_to administrator_research_service_activity_path(activity), class: 'btn btn-warning' do
+                %i.icon-eye-open
+                Lihat
+
+    %h4 STATUS : Diajukan Ke LPPM (Penugasan)
+    %table.table.table-bordered.table-hover
+      %thead
+        %tr
+          %th.span1 No.
+          %th ID Permohonan
+          %th Jenis
+          %th Judul Penelitian / Pengabdian
+          %th Ketua Peneliti
+          %th Aksi
+      %tbody
+        - @research_service_activitys_3.each_with_index do |activity, index| 
+          %tr
+            %td.center= index+1
+            %td.center= "##{activity.id}"
+            %td.center= activity.type_caption
+            %td.center= activity.title
+            %td.center= activity.lecturer.code_and_name
+            %td.center
+              = link_to administrator_research_service_activity_path(activity), class: 'btn btn-warning' do
+                %i.icon-eye-open
+                Lihat
+
+    %h4 STATUS : Diajukan Ke LPPM (Penyelesaian)
+    %table.table.table-bordered.table-hover
+      %thead
+        %tr
+          %th.span1 No.
+          %th ID Permohonan
+          %th Jenis
+          %th Judul Penelitian / Pengabdian
+          %th Ketua Peneliti
+          %th Aksi
+      %tbody
+        - @research_service_activitys_6.each_with_index do |activity, index| 
+          %tr
+            %td.center= index+1
+            %td.center= "##{activity.id}"
+            %td.center= activity.type_caption
+            %td.center= activity.title
+            %td.center= activity.lecturer.code_and_name
+            %td.center
+              = link_to administrator_research_service_activity_path(activity), class: 'btn btn-warning' do
+                %i.icon-eye-open
+                Lihat

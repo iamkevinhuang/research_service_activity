@@ -1,0 +1,30 @@
+- content_for :body do
+  = tinymce
+
+= form_for [:administrator, @research_service_activity_log], html: { class: 'well' } do |f|
+  %fieldset
+    %p
+      = hidden_field_tag :research_service_activity_id, @research_service_activity.id
+    %p
+      = f.label :note
+      = f.text_area :note, class: 'tinymce', rows: 8
+    - status_id = @research_service_activity.status_id
+    %p
+      = f.label :status_id
+      - case @research_service_activity.status_id
+
+      - when 1, 3, 5, 9, 13, 15, 17
+        %label.radio
+          = f.radio_button :status_id, status_id + 1
+          = ResearchServiceActivity::STATUS_TYPES[status_id + 1]
+
+        %label.radio
+          = f.radio_button :status_id, status_id + 2
+          = ResearchServiceActivity::STATUS_TYPES[status_id + 2]
+    %p
+      = f.submit 'Simpan', class: 'btn btn-primary'
+      = link_to administrator_research_service_activity_path( @research_service_activity ), class: 'btn' do
+        %i.icon-folder-close
+        Kembali
+
+= render '/lecturer/research_service_activities/research_service_activity'

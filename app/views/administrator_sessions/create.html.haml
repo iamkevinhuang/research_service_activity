@@ -1,0 +1,11 @@
+= form_tag administrator_sessions_path, :class => :well do
+  %fieldset
+    %legend LOGIN
+    = hidden_field_tag :login, @login
+    = hidden_field_tag :step, '2'
+    = label_tag :password1, 'Kata kunci 1:'
+    = password_field_tag :password1, nil, :class => 'input-large'
+    = label_tag :password2, "Kata Kunci 2: #{@administrator.password2_sample}"
+    = password_field_tag :password2, nil, :class => 'input-large'
+    %br/
+    = submit_tag 'Masuk', :class => 'btn btn-primary'

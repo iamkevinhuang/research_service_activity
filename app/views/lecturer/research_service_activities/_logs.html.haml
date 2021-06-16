@@ -1,0 +1,18 @@
+%h3 CATATAN KEGIATAN PENELITIAN / PENGABDIAN
+%table.table.table-bordered.table-hover
+	%thead
+		%tr
+			%th.span1 No.
+			%th Pada Hari
+			%th Status
+			%th Oleh
+			%th Catatan
+	%tbody
+		- @logs.reverse.each_with_index do |log, index|
+			%tr
+				%td.center= index + 1
+				%td.center= datetime_to_string log.created_at, :long
+				%td.center= log.status_caption
+				%td.center= log.by_name
+				%td= log.note.html_safe
+

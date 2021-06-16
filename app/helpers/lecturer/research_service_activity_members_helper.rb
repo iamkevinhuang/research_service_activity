@@ -1,0 +1,2 @@
+module Lecturer::ResearchServiceActivityMembersHelper
+end

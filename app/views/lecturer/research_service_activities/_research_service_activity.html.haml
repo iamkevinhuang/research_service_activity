@@ -1,0 +1,253 @@
+%h4 STATUS KEGIATAN
+%table.table.table-bordered.table-hover
+  %tbody
+    %tr
+      %th.span4= ResearchServiceActivity.human_attribute_name :id
+      %td= hash_id @research_service_activity
+    %tr
+      %th= ResearchServiceActivity.human_attribute_name :status_id
+      %td
+        %ol
+          - ResearchServiceActivity::STATUS_TYPES.each do |key, value|
+            - if @research_service_activity.status_id == key
+              %li
+                %span.label.label-warning= value
+            - else
+              %li= value
+    %tr
+      %th= ResearchServiceActivity.human_attribute_name :status_description
+      %td= @research_service_activity.status_description
+    %tr
+      %th= ResearchServiceActivity.human_attribute_name :last_log_note
+      %td= @research_service_activity_last_log.note.html_safe
+    %tr
+      %th= ResearchServiceActivity.human_attribute_name :last_log_created_at
+      %td= datetime_to_string @research_service_activity_last_log.created_at, :long
+    %tr
+      %th= ResearchServiceActivity.human_attribute_name :last_log_by_name
+      %td= @research_service_activity_last_log.by_name
+
+%h4 PERMOHONAN
+%table.table.table-bordered.table-hover
+  %tbody
+    %tr
+      %th.span4= ResearchServiceActivity.human_attribute_name :program_id
+      %td= @research_service_activity.program_title
+    %tr
+      %th= ResearchServiceActivity.human_attribute_name :year_stage_caption
+      %td= @research_service_activity.year_stage_caption
+    %tr
+      %th= ResearchServiceActivity.human_attribute_name :lecturer_id
+      %td= @research_service_activity.lecturer_name_code
+    %tr
+      %th= ResearchServiceActivity.human_attribute_name :type_id
+      %td= @research_service_activity.type_caption
+    %tr
+      %th= ResearchServiceActivity.human_attribute_name :title
+      %td= @research_service_activity.title
+    %tr
+      %th= ResearchServiceActivity.human_attribute_name :company_contact_name
+      %td= @research_service_activity.company_contact_caption
+    %tr
+      %th= ResearchServiceActivity.human_attribute_name :company_title
+      %td= @research_service_activity.company_title
+    %tr
+      %th= ResearchServiceActivity.human_attribute_name :implementation_at
+      %td= datetime_to_string @research_service_activity.implementation_at, :long
+    %tr
+      %th= ResearchServiceActivity.human_attribute_name :request_certificate
+      %td
+        - if @research_service_activity.request_certificate.exists?
+          = link_to @research_service_activity.request_certificate_number, @research_service_activity.request_certificate.url, target: :_blank
+        - else
+          = "-"
+
+%h4 DAFTAR ANGGOTA
+%table.table.table-bordered.table-hover
+  %thead
+    %tr
+      %th.compact No
+      %th Nama Anggota
+      %th NIDN
+      %th Asal Institusi
+      %th Status
+      - if  @research_service_activity.status_id == 0
+        %th Aksi
+
+  - if @research_service_activity.status_id > 0
+    %tbody
+      - @research_service_activity.members.where('status_id = 1').sort{ |a,b| a.position_id <=> b.position_id }.each do |member| 
+        %tr
+          %td.center= member.position_id
+          %td.center
+            = member.lecturer_name_with_title
+          %td.center
+            = member.lecturer_code
+          %td.center
+            = member.lecturer_institution_name
+          %td.center= member.status_caption
+          - if @research_service_activity.status_id == 0
+            %td.center
+              = link_to edit_lecturer_research_service_activity_member_path(member), class: 'btn btn-warning' do
+                %i.icon-edit
+                Edit
+  - else
+    %tbody
+      - @research_service_activity.members.sort{ |a,b| a.position_id <=> b.position_id }.each do |member| 
+        %tr
+          %td.center= member.position_id
+          %td.center
+            = member.lecturer_name_with_title
+          %td.center
+            = member.lecturer_code
+          %td.center
+            = member.lecturer_institution_name
+          %td.center= member.status_caption
+          - if @research_service_activity.status_id == 0
+            %td.center
+              = link_to edit_lecturer_research_service_activity_member_path(member), class: 'btn btn-warning' do
+                %i.icon-edit
+                Edit
+
+- if @research_service_activity.status_id >= 8
+  %h4 PENUGASAN
+  %table.table.table-bordered.table-hover
+    %tbody
+      %tr
+        %th.span4= ResearchServiceActivity.human_attribute_name :reply_document
+        %td
+          - if @research_service_activity.reply_document.exists?
+            = link_to @research_service_activity.reply_document_file_name, @research_service_activity.reply_document.url, target: :_blank
+          - else
+            %span.label.label-important
+              = ResearchServiceActivity.human_attribute_name :reply_document
+              tidak boleh kosong!
+      %tr
+        %th= ResearchServiceActivity.human_attribute_name :assignment_certificate
+        %td
+          - if @research_service_activity.assignment_certificate.exists?
+            = link_to @research_service_activity.assignment_certificate_number, @research_service_activity.assignment_certificate.url, target: :_blank
+          - else
+            = "-"
+
+- if @research_service_activity.status_id >= 12
+  %h4 PELAPORAN
+  %table.table.table-bordered.table-hover
+    %tbody
+      %tr
+        %th.span4= ResearchServiceActivity.human_attribute_name :article_title
+        %td
+          - if @research_service_activity.article_title.blank?
+            %span.label.label-important
+              = ResearchServiceActivity.human_attribute_name :article_title
+              tidak boleh kosong!
+          - else
+            = @research_service_activity.article_title
+      %tr
+        %th= ResearchServiceActivity.human_attribute_name :publisher_category_id
+        %td= @research_service_activity.publisher_category_caption
+      %tr
+        %th= ResearchServiceActivity.human_attribute_name :publisher_title
+        %td
+          - if @research_service_activity.publisher_title.blank?
+            %span.label.label-important
+              = ResearchServiceActivity.human_attribute_name :publisher_title
+              tidak boleh kosong!
+          - else
+            = @research_service_activity.publisher_title
+      %tr
+        %th= ResearchServiceActivity.human_attribute_name :publisher_license_number
+        %td
+          - if @research_service_activity.publisher_license_number.blank?
+            %span.label.label-important
+              = ResearchServiceActivity.human_attribute_name :publisher_license_number
+              tidak boleh kosong!
+          - else
+            = @research_service_activity.publisher_license_number
+      %tr
+        %th= ResearchServiceActivity.human_attribute_name :publisher_year_id
+        %td
+          - if @research_service_activity.publisher_year_id.nil?
+            %span.label.label-important
+              = ResearchServiceActivity.human_attribute_name :publisher_year_id
+              tidak boleh kosong!
+          - else
+            = @research_service_activity.publisher_year_id
+      - if [4,5,6,7].include? @research_service_activity.publisher_category_id
+        %tr
+          %th= ResearchServiceActivity.human_attribute_name :publisher_volume_id
+          %td
+            - if @research_service_activity.publisher_volume_id.nil?
+              %span.label.label-important
+                = ResearchServiceActivity.human_attribute_name :publisher_volume_id
+                tidak boleh kosong!
+            - else
+              = @research_service_activity.publisher_volume_id
+        %tr
+          %th= ResearchServiceActivity.human_attribute_name :publisher_number_id
+          %td
+            - if @research_service_activity.publisher_number_id.nil?
+              %span.label.label-important
+                = ResearchServiceActivity.human_attribute_name :publisher_number_id
+                tidak boleh kosong!
+            - else
+              = @research_service_activity.publisher_number_id
+      %tr
+        %th= ResearchServiceActivity.human_attribute_name :publisher_url
+        %td
+          - if @research_service_activity.publisher_url.blank?
+            %span.label.label-important
+              = ResearchServiceActivity.human_attribute_name :publisher_url
+              tidak boleh kosong!
+          - else
+            = link_to @research_service_activity.publisher_url, @research_service_activity.publisher_url, target: '_blank'
+      %tr
+        %th= ResearchServiceActivity.human_attribute_name :article_url
+        %td
+          - if @research_service_activity.article_url.blank?
+            %span.label.label-important
+              = ResearchServiceActivity.human_attribute_name :article_url
+              tidak boleh kosong!
+          - else
+            = link_to @research_service_activity.article_url, @research_service_activity.article_url, target: '_blank'
+      - if @research_service_activity.type_id == 1
+        %tr
+          %th= ResearchServiceActivity.human_attribute_name :news_url
+          %td
+            - if @research_service_activity.news_url.blank?
+              %span.label.label-important
+                = ResearchServiceActivity.human_attribute_name :news_url
+                tidak boleh kosong!
+            - else
+              = link_to @research_service_activity.news_url, @research_service_activity.news_url, target: '_blank'
+        %tr
+          %th= ResearchServiceActivity.human_attribute_name :video_url
+          %td
+            - if @research_service_activity.video_url.blank?
+              %span.label.label-important
+                = ResearchServiceActivity.human_attribute_name :video_url
+                tidak boleh kosong!
+            - else
+              = link_to @research_service_activity.video_url, @research_service_activity.video_url, target: '_blank'
+        %tr
+          %th= ResearchServiceActivity.human_attribute_name :copyright_document
+          %td
+            - if @research_service_activity.copyright_document.exists?
+              = link_to @research_service_activity.copyright_document_file_name, @research_service_activity.copyright_document.url, target: :_blank
+            - else
+              %span.label.label-important
+                Dokumen Hak Kekayaan Intelektual harus ada
+      %tr
+        %th= ResearchServiceActivity.human_attribute_name :optional_document
+        %td
+          - if @research_service_activity.optional_document.exists?
+            = link_to @research_service_activity.optional_document_file_name, @research_service_activity.optional_document.url, target: :_blank
+          - else
+            = "-"
+      %tr
+        %th= ResearchServiceActivity.human_attribute_name :report_certificate
+        %td
+          - if @research_service_activity.report_certificate.exists?
+            = link_to @research_service_activity.report_certificate_number, @research_service_activity.report_certificate.url, target: :_blank
+          - else
+            = "-"

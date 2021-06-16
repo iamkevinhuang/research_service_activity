@@ -1,0 +1,9 @@
+%h3 SISTEM INFORMASI AKADEMIK ADMINISTRATOR
+= form_tag administrator_sessions_path, :class => :well do
+  %fieldset
+    %legend LOGIN ADMINISTRATOR
+    = label_tag :login, 'Nama:'
+    = text_field_tag :login, nil, :class => 'input-large'
+    = hidden_field_tag :step, '1'
+    %br/
+    = submit_tag 'Lanjut', :class => 'btn btn-primary'

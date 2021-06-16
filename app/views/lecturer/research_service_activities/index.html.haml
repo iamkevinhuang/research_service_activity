@@ -1,0 +1,26 @@
+%h3 PENCATATAN KEGIATAN PENELITIAN/PENGABDIAN
+%p
+  = link_to new_lecturer_research_service_activity_path, class: 'btn btn-primary' do
+    %i.icon-plus
+    Tambah Kegiatan Baru
+
+%table.table.table-bordered.table-hover
+  %thead
+    %th.compact No.
+    %th= ResearchServiceActivity.human_attribute_name :id
+    %th= ResearchServiceActivity.human_attribute_name :type_id
+    %th= ResearchServiceActivity.human_attribute_name :title
+    %th= ResearchServiceActivity.human_attribute_name :status_id
+    %th Aksi
+
+  %tbody
+    - @research_service_activities.each_with_index do |research_service_activity, index|
+      %tr
+        %td.center= index + 1
+        %td.center= "##{research_service_activity.id}"
+        %td.center= research_service_activity.type_caption
+        %td= research_service_activity.title
+        %td.center= research_service_activity.status_caption
+        %td.center
+          = link_to lecturer_research_service_activity_path( research_service_activity ), class: "btn", title: 'Lihat' do
+            %i.icon-folder-open

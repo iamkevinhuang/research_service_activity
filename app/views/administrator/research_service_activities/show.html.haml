@@ -1,0 +1,11 @@
+%h3 PERMOHONAN PENELITIAN / PENGABDIAN
+= render '/lecturer/research_service_activities/research_service_activity'
+= link_to administrator_research_service_activities_path, class: 'btn', title: 'Kembali' do
+    %i.icon-folder-close
+    Kembali
+= link_to new_administrator_research_service_activity_log_path(research_service_activity_id: @research_service_activity.id), class: 'btn btn-warning', title: 'Ubah Status' do
+    %i.icon-refresh
+    Ubah Status
+= link_to logs_administrator_research_service_activity_path(@research_service_activity), class: 'btn', title: 'Catatan' do
+    %i.icon-folder-open
+    Catatan

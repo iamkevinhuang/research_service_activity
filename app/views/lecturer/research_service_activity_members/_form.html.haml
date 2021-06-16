@@ -1,0 +1,109 @@
+- if @research_service_activity_member.errors.size > 0
+  .alert.alert-danger
+    - @research_service_activity_member.errors.full_messages.each do |msg|
+      = msg
+
+-# try catch utk edit
+- if !params[:type_of_lecturer]
+  - if !@research_service_activity_member.lecturer_id
+    - params[:type_of_lecturer] = nil
+  - elsif @research_service_activity_member.lecturer_id == 0
+    - params[:type_of_lecturer] = "0"
+  - elsif @research_service_activity_member.lecturer_id > 0
+    - params[:type_of_lecturer] = "1"
+
+
+- if params[:type_of_lecturer]
+  - unless params[:type_of_lecturer] == "0"
+    = form_for [:lecturer, @research_service_activity_member], html: { class: 'well' } do |f|
+      %fieldset
+        %p
+          = f.hidden_field :research_service_activity_id, :value => @research_service_activity.id
+        %p
+          = f.label :position_id
+          = f.select :position_id, (1..50), {}, class: 'input-mini'
+
+        %p
+          = f.label :lecturer_browse_key
+          = f.text_field :lecturer_browse_key, class: 'input-xxlarge browse_lecturers', required: true
+        %p
+          = f.label :status_id
+          %label.radio
+            = f.radio_button :status_id, '0', required: true
+            = ResearchServiceActivityMember::STATUS_TYPES[0]
+          %label.radio
+            = f.radio_button :status_id, '3'
+            = ResearchServiceActivityMember::STATUS_TYPES[3]
+        %p
+          = f.submit 'Simpan', class: 'btn btn-primary'
+          - if @research_service_activity_member.id
+            = link_to lecturer_research_service_activity_path(@research_service_activity), class: 'btn' do
+              %i.icon-folder-close
+              Kembali
+          - else
+            = link_to new_lecturer_research_service_activity_member_path(research_service_activity_id: @research_service_activity), class: 'btn' do
+              %i.icon-folder-close
+              Kembali
+  - else
+    = form_for [:lecturer, @research_service_activity_member], html: { class: 'well' } do |f|
+      %fieldset
+        %p
+          = f.hidden_field :research_service_activity_id, :value => @research_service_activity.id
+          = f.hidden_field :lecturer_id, :value => 0
+        %p
+          = f.label :position_id
+          = f.select :position_id, (1..50), {}, class: 'input-mini'
+
+        %p
+          = f.label :lecturer_number
+          = f.text_field :lecturer_number, class: 'input-xxlarge'
+        %p
+          = f.label :lecturer_name
+          = f.text_field :lecturer_name, class: 'input-xxlarge', required: true
+        %p
+          = f.label :institution_browse_key
+          = f.text_field :institution_browse_key, class: 'browse_institutions input-xxlarge', required: true
+        %p
+          = f.label :status_id
+          %label.radio
+            = f.radio_button :status_id, '1', required: true
+            = ResearchServiceActivityMember::STATUS_TYPES[1]
+          %label.radio
+            = f.radio_button :status_id, '3'
+            = ResearchServiceActivityMember::STATUS_TYPES[3]
+        %p
+          = f.submit 'Simpan', class: 'btn btn-primary'
+          - if @research_service_activity_member.id
+            = link_to lecturer_research_service_activity_path(@research_service_activity), class: 'btn' do
+              %i.icon-folder-close
+              Kembali
+          - else
+            = link_to new_lecturer_research_service_activity_member_path(research_service_activity_id: @research_service_activity), class: 'btn' do
+              %i.icon-folder-close
+              Kembali
+- else
+  - if params[:research_service_activity_id]
+    = form_tag new_lecturer_research_service_activity_member_path, method: :get, class: 'well' do
+      %p
+        = hidden_field_tag :research_service_activity_id, params[:research_service_activity_id]
+      %p
+        = label_tag :type_of_lecturer, "Sumber Dosen"
+        = select_tag(:type_of_lecturer, options_for_select([["Dosen Luar UNPRI", 0], ["Dosen Dari UNPRI",1]]), class: 'input-xlarge')
+      %p
+        = submit_tag 'Selanjutnya', class: 'btn btn-primary'
+        = link_to lecturer_research_service_activity_path(@research_service_activity), class: 'btn' do
+          %i.icon-folder-close
+          Kembali
+  - else
+    = form_tag edit_lecturer_research_service_activity_member_path, method: :get, class: 'well' do
+      %p
+        = label_tag :type_of_lecturer, "Sumber Dosen"
+        = select_tag(:type_of_lecturer, options_for_select([["Dosen Luar UNPRI", 0], ["Dosen Dari UNPRI",1]]), class: 'input-xlarge')
+      %p
+        = submit_tag 'Selanjutnya', class: 'btn btn-primary'
+        = link_to lecturer_research_service_activity_path(@research_service_activity), class: 'btn' do
+          %i.icon-folder-close
+          Kembali
+
+
+

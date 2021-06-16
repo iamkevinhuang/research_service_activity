@@ -1,0 +1,61 @@
+%h3
+  KEGIATAN
+  = @research_service_activity.type_caption.upcase
+
+= render 'research_service_activity'
+%p
+  - if @research_service_activity.lecturer_id == current_lecturer.id
+    - if @research_service_activity.status_id == 0
+      = link_to edit_lecturer_research_service_activity_path(@research_service_activity), class: 'btn btn-warning', title: 'Koreksi' do
+        %i.icon-edit
+        Pengisian Permohonan
+      = link_to new_lecturer_research_service_activity_log_path(research_service_activity_id: @research_service_activity.id), class: 'btn btn-warning', title: 'Ubah Status' do
+        %i.icon-refresh
+        Ubah Status
+      = link_to new_lecturer_research_service_activity_member_path(research_service_activity_id: @research_service_activity), class: 'btn btn-primary', title: 'Tambah Anggota' do
+        %i.icon-plus
+        Tambah Anggota
+
+    - if @research_service_activity.status_id == 8
+
+      = link_to edit_lecturer_research_service_activity_path(@research_service_activity), class: 'btn btn-warning', title: 'Upload Surat Balasan' do
+        %i.icon-edit
+        Pengisian Penugasan
+
+      = link_to new_lecturer_research_service_activity_log_path(research_service_activity_id: @research_service_activity.id), class: 'btn btn-warning', title: 'Ubah Status' do
+        %i.icon-refresh
+        Ubah Status
+
+    - if [2,4,6].include? @research_service_activity.status_id
+      - status_caption = "Ubah status ke #{ResearchServiceActivity::STATUS_TYPES[0]}"
+      = link_to draft_request_lecturer_research_service_activity_path(@research_service_activity), class: 'btn btn-warning', title: status_caption, method: :post do
+        %i.icon-refresh
+        = status_caption
+
+    - if [7, 10].include? @research_service_activity.status_id
+      - status_caption = "Ubah status ke #{ResearchServiceActivity::STATUS_TYPES[8]}"
+      = link_to draft_assignment_lecturer_research_service_activity_path(@research_service_activity), class: 'btn btn-warning', title: status_caption, method: :post do
+        %i.icon-refresh
+        = status_caption
+
+    - if [11,14,16,18].include? @research_service_activity.status_id
+      - status_caption = "Ubah status ke #{ResearchServiceActivity::STATUS_TYPES[12]}"
+      = link_to draft_report_lecturer_research_service_activity_path(@research_service_activity), class: 'btn btn-warning', title: status_caption, method: :post do
+        %i.icon-refresh
+        = status_caption
+
+    - if @research_service_activity.status_id == 12
+      = link_to edit_lecturer_research_service_activity_path(@research_service_activity), class: 'btn btn-warning', title: 'Upload Dokumen Kegiatan' do
+        %i.icon-edit
+        Pengisian Pelaporan
+      = link_to new_lecturer_research_service_activity_log_path(research_service_activity_id: @research_service_activity.id), class: 'btn btn-warning', title: 'Ubah Status' do
+        %i.icon-refresh
+        Ubah Status
+
+    = link_to logs_lecturer_research_service_activity_path(@research_service_activity), class: 'btn', title: 'Catatan' do
+      %i.icon-folder-open
+      Catatan
+
+    = link_to reset_lecturer_research_service_activity_path(@research_service_activity), class: 'btn btn-danger', title: 'Batalkan Pencatatan', method: :post, confirm: 'Anda yakin untuk membatalkan pencatatan kegiatan?' do
+      %i.icon-refresh
+      Batalkan Pencatatan

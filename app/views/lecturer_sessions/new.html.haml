@@ -1,0 +1,17 @@
+%h3 SISTEM INFORMASI AKADEMIK DOSEN
+= form_tag lecturer_sessions_path, class: :well do
+  %fieldset
+    %legend LOGIN DOSEN
+    = label_tag :email, 'Email'
+    = text_field_tag :email, nil, class: :span3
+    = label_tag :password, 'Kata kunci'
+    = password_field_tag :password, nil, class: :span3
+    %br/
+    = submit_tag "Masuk", class: 'btn btn-primary'
+    = link_to 'Lupa kata kunci ?', new_lecturer_password_reset_path, class: 'btn'
+
+%p Catatan:
+%ol
+  %li Prosedur pendaftaran Email Dosen dilakukan oleh Biro Administrasi Umum;
+  %li Bagi Bapak/Ibu Dosen yang belum mendaftar, silakan hubungi Biro Administrasi Umum / Biro Administrasi Akademik Fakultas Anda;
+  %li Fasilitas Lupa Kata Kunci bisa digunakan untuk mendapatkan kata kunci.
